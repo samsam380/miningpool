@@ -97,5 +97,5 @@ Recommended production approach:
 ## Important notes
 
 - First build can take several minutes because Miningcore is compiled in Docker.
-- Miningcore currently targets .NET 6, so the runtime image is pinned to .NET 6 in `miningcore/Dockerfile`.
+- Miningcore currently targets .NET 6 and requires `Microsoft.AspNetCore.App`, so the runtime image is pinned to `mcr.microsoft.com/dotnet/aspnet:6.0` in `miningcore/Dockerfile`.
 - Perform security review, payment dry-runs, and low-hashrate soak tests before scaling.

@@ -18,7 +18,7 @@ RUN git clone --branch ${MININGCORE_REF} ${MININGCORE_REPO} miningcore
 WORKDIR /src/miningcore
 RUN dotnet publish -c Release -o /app/out src/Miningcore/Miningcore.csproj
 
-FROM mcr.microsoft.com/dotnet/runtime:6.0
+FROM mcr.microsoft.com/dotnet/aspnet:6.0
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libzmq5 \
     ca-certificates \
