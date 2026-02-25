@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sam256 Mining Pool | Production Console</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-wrap">
+        <div class="brand">
+          <span class="brand-mark">₿</span>
+          <div>
+            <h1>Sam256 Mining</h1>
+            <p>Production pool console (Pool + Solo)</p>
+          </div>
+        </div>
+        <a class="btn btn-outline" href="#setup">Configure Miner</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero container">
+        <div>
+          <p class="eyebrow">Production Deployment Pack</p>
+          <h2>Bitcoin pool and solo mining endpoints backed by Miningcore.</h2>
+          <p>
+            This UI now ships with a deployable backend stack (Miningcore + PostgreSQL + Redis + Nginx).
+            Update your RPC and payout settings, then run Docker compose on your Contabo server.
+          </p>
+          <div class="hero-cta">
+            <a class="btn" href="#dashboard">Open Dashboard</a>
+            <a class="btn btn-outline" href="#deployment">Deployment Notes</a>
+          </div>
+        </div>
+        <div class="hero-card">
+          <h3>Default Node Target</h3>
+          <p><strong>Bitcoin Node:</strong> 161.97.137.172 (Knots BIP110)</p>
+          <p><strong>Pool:</strong> stratum+tcp://&lt;host&gt;:3333</p>
+          <p><strong>Solo:</strong> stratum+tcp://&lt;host&gt;:3334</p>
+          <div class="status-row">
+            <span class="status-dot"></span>
+            <span id="apiStatus">Checking API...</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="setup" class="container card form-card">
+        <h3>Miner Setup</h3>
+        <p>Use one profile for shared payouts or solo block hunt.</p>
+
+        <div class="mode-toggle" role="tablist" aria-label="Mining mode">
+          <button id="poolModeBtn" class="mode-btn active" data-mode="pool">Pool Mining</button>
+          <button id="soloModeBtn" class="mode-btn" data-mode="solo">Solo Mining</button>
+        </div>
+
+        <form id="miningForm" class="setup-grid">
+          <label>
+            Stratum URL
+            <input id="stratumUrl" type="text" value="stratum+tcp://sam256.com:3333" required />
+          </label>
+          <label>
+            Node RPC Host
+            <input id="rpcHost" type="text" value="161.97.137.172" required />
+          </label>
+          <label>
+            Worker Name
+            <input id="workerName" type="text" value="samminer.worker01" required />
+          </label>
+          <label>
+            BTC Username/Address
+            <input id="btcAddress" type="text" placeholder="bc1..." required />
+          </label>
+          <label>
+            Hashrate (TH/s)
+            <input id="hashrate" type="number" min="1" value="120" required />
+          </label>
+          <label>
+            Pool Fee (%)
+            <input id="fee" type="number" min="0" step="0.1" value="1.5" required />
+          </label>
+
+          <button class="btn" type="submit">Save Configuration</button>
+        </form>
+
+        <p id="formMessage" class="message" aria-live="polite"></p>
+      </section>
+
+      <section id="dashboard" class="container dashboard-grid">
+        <article class="card stat-card">
+          <h4>Selected Mode</h4>
+          <p id="modeStat" class="stat">Pool Mining</p>
+        </article>
+        <article class="card stat-card">
+          <h4>Estimated Daily Yield</h4>
+          <p id="yieldStat" class="stat">0.00000000 BTC</p>
+        </article>
+        <article class="card stat-card">
+          <h4>Node Endpoint</h4>
+          <p id="nodeStat" class="stat">161.97.137.172</p>
+        </article>
+        <article class="card stat-card">
+          <h4>Live Pool Hashrate</h4>
+          <p id="poolHashrateStat" class="stat">Waiting for API</p>
+        </article>
+      </section>
+
+      <section id="deployment" class="container card roadmap">
+        <h3>Production Deployment</h3>
+        <ol>
+          <li>Copy `.env.example` to `.env` and fill strong secrets.</li>
+          <li>Edit `miningcore/config.json` payout and RPC credentials.</li>
+          <li>Run `./scripts/setup-production.sh` on your Contabo server.</li>
+          <li>Point hashrate to port <strong>3333</strong> (pool) or <strong>3334</strong> (solo).</li>
+          <li>Add TLS/reverse proxy for `sam256.com/mining/` after validation.</li>
+        </ol>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>Sam256 Mining · Production-ready deployment repository</p>
+      </div>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
