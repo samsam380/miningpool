@@ -26,6 +26,12 @@ A workflow is included at `.github/workflows/pages.yml`.
 2. In GitHub repo settings, enable **Pages** with **GitHub Actions** as source.
 3. Push to `main` to auto-deploy.
 
+### If GitHub Actions fails with “Get Pages site failed / Not Found”
+
+This repo includes `enablement: true` in the workflow so Pages can be auto-enabled.
+If your run still fails once, open **Settings → Pages** and set **Source = GitHub Actions**, then rerun the workflow.
+
+
 ## What this prototype is (and is not)
 
 ✅ UI/UX and user flow test
