@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sam256 Mining Pool | Testnet Preview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-wrap">
+        <div class="brand">
+          <span class="brand-mark">₿</span>
+          <div>
+            <h1>Sam256 Mining</h1>
+            <p>Pool + Solo mining control panel (prototype)</p>
+          </div>
+        </div>
+        <a class="btn btn-outline" href="#setup">Configure Miner</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero container">
+        <div>
+          <p class="eyebrow">GitHub Pages Test Build</p>
+          <h2>Run shared pool mining or solo lottery mode from one interface.</h2>
+          <p>
+            This first version is a frontend shell designed to match the
+            sam256.com visual style: dark gradients, bright highlights, and
+            crisp information cards. Connect this UI to your pool backend once
+            validated.
+          </p>
+          <div class="hero-cta">
+            <a class="btn" href="#dashboard">Open Dashboard</a>
+            <a class="btn btn-outline" href="#roadmap">Migration Plan</a>
+          </div>
+        </div>
+        <div class="hero-card">
+          <h3>Node Connectivity Target</h3>
+          <p><strong>Primary Node:</strong> 161.97.137.172 (Knots BIP110)</p>
+          <p>
+            Backend APIs are mocked in this preview. You can later wire this to
+            Stratum + job manager services.
+          </p>
+          <div class="status-row">
+            <span class="status-dot"></span>
+            <span>Frontend prototype active</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="setup" class="container card form-card">
+        <h3>Mining Mode Setup</h3>
+        <p>Switch between shared payouts and solo block-hunt mode.</p>
+
+        <div class="mode-toggle" role="tablist" aria-label="Mining mode">
+          <button id="poolModeBtn" class="mode-btn active" data-mode="pool">Pool Mining</button>
+          <button id="soloModeBtn" class="mode-btn" data-mode="solo">Solo Mining</button>
+        </div>
+
+        <form id="miningForm" class="setup-grid">
+          <label>
+            Stratum URL
+            <input id="stratumUrl" type="text" value="stratum+tcp://pool.sam256.com:3333" required />
+          </label>
+          <label>
+            Node RPC Host
+            <input id="rpcHost" type="text" value="161.97.137.172" required />
+          </label>
+          <label>
+            Worker Name
+            <input id="workerName" type="text" value="samminer.worker01" required />
+          </label>
+          <label>
+            BTC Payout Address
+            <input id="btcAddress" type="text" placeholder="bc1..." required />
+          </label>
+          <label>
+            Hashrate (TH/s)
+            <input id="hashrate" type="number" min="1" value="120" required />
+          </label>
+          <label>
+            Fee (%)
+            <input id="fee" type="number" min="0" step="0.1" value="1.5" required />
+          </label>
+
+          <button class="btn" type="submit">Save Configuration</button>
+        </form>
+
+        <p id="formMessage" class="message" aria-live="polite"></p>
+      </section>
+
+      <section id="dashboard" class="container dashboard-grid">
+        <article class="card stat-card">
+          <h4>Selected Mode</h4>
+          <p id="modeStat" class="stat">Pool Mining</p>
+        </article>
+        <article class="card stat-card">
+          <h4>Estimated Daily Yield</h4>
+          <p id="yieldStat" class="stat">0.00000000 BTC</p>
+        </article>
+        <article class="card stat-card">
+          <h4>Node Endpoint</h4>
+          <p id="nodeStat" class="stat">161.97.137.172</p>
+        </article>
+      </section>
+
+      <section id="roadmap" class="container card roadmap">
+        <h3>Next Build Milestones</h3>
+        <ol>
+          <li>Connect UI to a real Stratum server and share manager.</li>
+          <li>Add account auth, worker management, and payout history.</li>
+          <li>Deploy backend services on your Contabo server with reverse proxy.</li>
+          <li>Enable SSL + monitoring + firewall hardening for production.</li>
+        </ol>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>Sam256 Mining Prototype · Built for GitHub Pages validation</p>
+      </div>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
