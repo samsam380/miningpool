@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 
 ARG MININGCORE_REPO=https://github.com/coinfoundry/miningcore.git
 ARG MININGCORE_REF=master
@@ -18,7 +18,7 @@ RUN git clone --branch ${MININGCORE_REF} ${MININGCORE_REPO} miningcore
 WORKDIR /src/miningcore
 RUN dotnet publish -c Release -o /app/out src/Miningcore/Miningcore.csproj
 
-FROM mcr.microsoft.com/dotnet/runtime:8.0
+FROM mcr.microsoft.com/dotnet/runtime:6.0
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libzmq5 \
     ca-certificates \
