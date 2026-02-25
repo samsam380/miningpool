@@ -38,6 +38,25 @@ git pull origin main
 
 You usually **do not** need to delete and re-clone the repo, unless your local folder is broken.
 
+
+### If `git pull` says `miningcore/config.json` would be overwritten
+
+You changed `miningcore/config.json` locally (normal for secrets/settings).
+Use stash + pull + reapply:
+
+```bash
+cd /opt/miningpool
+git stash push -m "local miningcore config" miningcore/config.json
+git pull origin main
+git stash pop
+```
+
+Then ensure this field is exactly:
+
+```json
+"manager": "Integrated"
+```
+
 ## Fix for your current registry denied error
 
 Your logs show image pull errors from `ghcr.io/...` and `coinfoundry/miningcore`.
