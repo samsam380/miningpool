@@ -1,0 +1,62 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: sam256-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${PGUSER}
+      POSTGRES_PASSWORD: ${PGPASSWORD}
+      POSTGRES_DB: ${PGDATABASE}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${PGUSER} -d ${PGDATABASE}"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+
+  redis:
+    image: redis:7-alpine
+    container_name: sam256-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+
+  miningcore:
+    image: ${MININGCORE_IMAGE:-coinfoundry/miningcore:latest}
+    container_name: sam256-miningcore
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    env_file:
+      - .env
+    volumes:
+      - ./miningcore/config.json:/app/config.json:ro
+      - ./miningcore/logs:/var/log/miningcore
+    command: ["-c", "/app/config.json"]
+    ports:
+      - "3052:3052" # API
+      - "3333:3333" # BTC pool mode stratum
+      - "3334:3334" # BTC solo mode stratum
+
+  web:
+    image: nginx:1.27-alpine
+    container_name: sam256-web
+    restart: unless-stopped
+    depends_on:
+      - miningcore
+    volumes:
+      - ./index.html:/usr/share/nginx/html/index.html:ro
+      - ./styles.css:/usr/share/nginx/html/styles.css:ro
+      - ./app.js:/usr/share/nginx/html/app.js:ro
+      - ./ops/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - "8080:80"
+
+volumes:
+  postgres_data:
+  redis_data:
