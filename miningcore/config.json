@@ -5,7 +5,7 @@
     "enableConsoleColors": true
   },
   "banning": {
-    "manager": "integrated",
+    "manager": "Integrated",
     "banOnJunkReceive": true,
     "banOnInvalidShares": false
   },

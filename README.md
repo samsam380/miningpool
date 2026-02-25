@@ -68,6 +68,19 @@ docker compose build --no-cache miningcore
 ./scripts/setup-production.sh
 ```
 
+
+### If you see `banning.manager` enum error
+
+Use exact enum casing in `miningcore/config.json`:
+
+```json
+"banning": {
+  "manager": "Integrated"
+}
+```
+
+`integrated` (lowercase) will fail startup.
+
 ## Required edits before real mining
 
 1. `miningcore/config.json`
