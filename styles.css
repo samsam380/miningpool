@@ -1,0 +1,237 @@
+:root {
+  --bg: #0D3643;
+  --surface: #123F4F;
+  --surface-soft: #19556a;
+  --text: #E6F1F3;
+  --muted: #9FB7BF;
+  --accent: #F2A65A;
+  --accent-hover: #FFB703;
+  --border: #2a6072;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: var(--text);
+  background: radial-gradient(circle at top right, #1f5b6f, var(--bg) 55%);
+  line-height: 1.5;
+}
+
+.container {
+  width: min(1100px, 92vw);
+  margin: 0 auto;
+}
+
+.site-header {
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(6px);
+  position: sticky;
+  top: 0;
+  background: rgba(13, 54, 67, 0.8);
+}
+
+.header-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.brand {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.brand p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.brand-mark {
+  width: 2rem;
+  height: 2rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+  color: #1f2e35;
+  font-weight: 800;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 1.2rem;
+  padding: 3rem 0 1.5rem;
+}
+
+.eyebrow {
+  color: var(--accent-hover);
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+
+.hero h2 {
+  margin-top: 0;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+}
+
+.hero-card,
+.card {
+  background: linear-gradient(180deg, var(--surface-soft), var(--surface));
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
+.btn {
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+  color: #112733;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 0.62rem 0.95rem;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.btn-outline {
+  border-color: var(--border);
+  background: transparent;
+  color: var(--text);
+}
+
+.btn:hover {
+  filter: brightness(1.04);
+}
+
+.status-row {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.8rem;
+  color: var(--muted);
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent-hover);
+  box-shadow: 0 0 0 4px rgba(255, 183, 3, 0.18);
+}
+
+.form-card {
+  margin-top: 1rem;
+}
+
+.mode-toggle {
+  display: inline-flex;
+  gap: 0.45rem;
+  margin: 0.8rem 0 1rem;
+  padding: 0.25rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #113847;
+}
+
+.mode-btn {
+  background: transparent;
+  color: var(--muted);
+  border: none;
+  padding: 0.52rem 0.85rem;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.mode-btn.active {
+  background: linear-gradient(120deg, #1b4f61, #123f4f);
+  color: var(--text);
+}
+
+.setup-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.85rem;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+input {
+  background: #0f3240;
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 9px;
+  padding: 0.62rem 0.72rem;
+}
+
+.message {
+  min-height: 1.2rem;
+  margin-top: 0.6rem;
+  color: var(--accent-hover);
+}
+
+.dashboard-grid {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.stat {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.roadmap {
+  margin-top: 1rem;
+  margin-bottom: 2.2rem;
+}
+
+.roadmap li {
+  margin-bottom: 0.55rem;
+}
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  padding: 1rem 0 2.2rem;
+}
+
+@media (max-width: 800px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .header-wrap {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.7rem;
+  }
+}
