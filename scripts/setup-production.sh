@@ -8,9 +8,10 @@ fi
 
 mkdir -p miningcore/logs
 
-echo "Using MININGCORE_IMAGE=${MININGCORE_IMAGE:-coinfoundry/miningcore:latest}"
+echo "Building Miningcore from ${MININGCORE_REPO:-https://github.com/coinfoundry/miningcore.git} (${MININGCORE_REF:-master})"
 echo "Starting pool stack..."
-docker compose pull
+docker compose pull postgres redis web
+docker compose build miningcore
 docker compose up -d
 
 echo "Pool stack started."

@@ -1,13 +1,13 @@
 # Sam256 Bitcoin Mining Pool (Production Deployment Repo)
 
-This repository now includes a deployable stack for a real Bitcoin mining pool service with both shared-pool and solo modes.
+This repository includes a deployable stack for a Bitcoin mining pool service with both shared-pool and solo modes.
 
 ## What is included
 
-- **Mining backend**: Miningcore (Stratum + API + payout engine)
+- **Mining backend**: Miningcore (Stratum + API + payout engine), built from source in Docker
 - **Databases**: PostgreSQL + Redis
 - **Web layer**: Nginx serving the Sam256 frontend and proxying `/api/*` to Miningcore
-- **Frontend**: `index.html`, `styles.css`, `app.js` for pool/solo UX, miner profile helpers, and live stat pull
+- **Frontend**: `index.html`, `styles.css`, `app.js` for pool/solo UX and live stat pull
 - **Ops**: `docker-compose.yml`, `scripts/setup-production.sh`, `.env.example`, and baseline `miningcore/config.json`
 
 ## Ports
@@ -20,34 +20,42 @@ This repository now includes a deployable stack for a real Bitcoin mining pool s
 ## Quick start on your Contabo server
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/samsam380/miningpool.git
 cd miningpool
 cp .env.example .env
 # edit .env and miningcore/config.json with real secrets + wallet + RPC creds
 ./scripts/setup-production.sh
 ```
 
-## Registry denied fix (your current error)
+## Important: update your server after every merge
 
-If you get `error from registry: denied` while pulling Miningcore, set a public image in `.env`:
+Yes, after merging updates on GitHub you should update the server copy:
 
 ```bash
-echo 'MININGCORE_IMAGE=coinfoundry/miningcore:latest' >> .env
-docker compose pull
-docker compose up -d
+cd /opt/miningpool
+git pull origin main
 ```
 
-This repo now defaults to `coinfoundry/miningcore:latest` in `docker-compose.yml`, and you can override it anytime with `MININGCORE_IMAGE` in `.env`.
+You usually **do not** need to delete and re-clone the repo, unless your local folder is broken.
 
-Then point rented hashpower to:
+## Fix for your current registry denied error
 
-- Pool mode: `stratum+tcp://<server-ip>:3333`
-- Solo mode: `stratum+tcp://<server-ip>:3334`
+Your logs show image pull errors from `ghcr.io/...` and `coinfoundry/miningcore`.
+This repo now builds Miningcore from source locally in Docker, so no external Miningcore image pull is required.
+
+After pulling latest changes, run:
+
+```bash
+cd /opt/miningpool
+git pull origin main
+chmod +x scripts/setup-production.sh
+./scripts/setup-production.sh
+```
 
 ## Required edits before real mining
 
 1. `miningcore/config.json`
-   - Replace all placeholder values:
+   - Replace placeholders:
      - RPC user/password
      - payout wallet address
      - pool fee recipient addresses
@@ -63,7 +71,7 @@ Then point rented hashpower to:
 
 ## Deploying behind sam256.com/mining/
 
-The recommended production approach is:
+Recommended production approach:
 
 - Keep this repository as your service source.
 - Run Docker stack on Contabo.
@@ -72,5 +80,5 @@ The recommended production approach is:
 
 ## Important notes
 
-- This stack is a practical production baseline, but you should still perform full security review, payment dry-runs, and testnet soak tests before large hashrate.
-- Start with small hashrate for validation, verify payouts, then scale.
+- First build can take several minutes because Miningcore is compiled in Docker.
+- Perform security review, payment dry-runs, and low-hashrate soak tests before scaling.

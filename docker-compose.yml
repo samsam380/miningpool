@@ -24,7 +24,13 @@ services:
       - redis_data:/data
 
   miningcore:
-    image: ${MININGCORE_IMAGE:-coinfoundry/miningcore:latest}
+    build:
+      context: .
+      dockerfile: miningcore/Dockerfile
+      args:
+        MININGCORE_REPO: ${MININGCORE_REPO:-https://github.com/coinfoundry/miningcore.git}
+        MININGCORE_REF: ${MININGCORE_REF:-master}
+    image: sam256-miningcore:local
     container_name: sam256-miningcore
     restart: unless-stopped
     depends_on:
