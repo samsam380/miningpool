@@ -1,62 +1,64 @@
-# Sam256 Mining Pool Preview
+# Sam256 Bitcoin Mining Pool (Production Deployment Repo)
 
-This repository now contains a **GitHub Pages frontend prototype** for your Bitcoin mining pool concept with:
+This repository now includes a deployable stack for a real Bitcoin mining pool service with both shared-pool and solo modes.
 
-- Pool mining mode
-- Solo mining mode
-- Config form for Stratum/RPC/worker/address inputs
-- Dashboard cards for mode, estimated daily yield, and node endpoint
-- Styling aligned with a dark, high-contrast "sam256" look-and-feel
+## What is included
 
-## Run locally
+- **Mining backend**: Miningcore (Stratum + API + payout engine)
+- **Databases**: PostgreSQL + Redis
+- **Web layer**: Nginx serving the Sam256 frontend and proxying `/api/*` to Miningcore
+- **Frontend**: `index.html`, `styles.css`, `app.js` for pool/solo UX, miner profile helpers, and live stat pull
+- **Ops**: `docker-compose.yml`, `scripts/setup-production.sh`, `.env.example`, and baseline `miningcore/config.json`
 
-Open `index.html` directly, or serve with any static server:
+## Ports
+
+- `3333` -> BTC pool mining stratum
+- `3334` -> BTC solo mining stratum
+- `3052` -> Miningcore API (internal via Nginx proxy)
+- `8080` -> Web UI
+
+## Quick start on your Contabo server
 
 ```bash
-python3 -m http.server 8080
+git clone <your-repo-url>
+cd miningpool
+cp .env.example .env
+# edit .env and miningcore/config.json with real secrets + wallet + RPC creds
+./scripts/setup-production.sh
 ```
 
-Then visit <http://localhost:8080>.
+Then point rented hashpower to:
 
-## GitHub Pages test deployment
+- Pool mode: `stratum+tcp://<server-ip>:3333`
+- Solo mode: `stratum+tcp://<server-ip>:3334`
 
-A workflow is included at `.github/workflows/pages.yml`.
+## Required edits before real mining
 
-1. Push this repository to GitHub.
-2. In GitHub repo settings, enable **Pages** with **GitHub Actions** as source.
-3. Push to `main` to auto-deploy.
+1. `miningcore/config.json`
+   - Replace all placeholder values:
+     - RPC user/password
+     - payout wallet address
+     - pool fee recipient addresses
+2. `.env`
+   - Replace PostgreSQL credentials with strong passwords
+3. Bitcoin node
+   - Ensure RPC is reachable from Docker network/server
+   - Restrict RPC by firewall/IP allowlist
+4. OS/network hardening
+   - Open only required ports
+   - Add HTTPS reverse proxy for `sam256.com/mining/`
+   - Enable fail2ban/ufw and monitoring/alerts
 
-### If GitHub Actions fails with “Get Pages site failed / Not Found”
+## Deploying behind sam256.com/mining/
 
-This repo includes `enablement: true` in the workflow so Pages can be auto-enabled.
-If your run still fails once, open **Settings → Pages** and set **Source = GitHub Actions**, then rerun the workflow.
+The recommended production approach is:
 
+- Keep this repository as your service source.
+- Run Docker stack on Contabo.
+- Put Nginx/Caddy in front with TLS certificate for `sam256.com`.
+- Reverse proxy `/mining/` to this web container (`localhost:8080`).
 
-## What this prototype is (and is not)
+## Important notes
 
-✅ UI/UX and user flow test
-✅ A place to validate your branding/theme on GitHub Pages
-
-❌ Not a real mining backend yet
-❌ No Stratum server, share accounting, payouts, authentication, or wallet ops in this repo yet
-
-## Suggested migration path to your Contabo node server
-
-1. Keep this static frontend hosted on GitHub Pages initially.
-2. Build pool backend as separate services on your Contabo host (161.97.137.172):
-   - Stratum service
-   - Share processor/payment engine
-   - API service for this frontend
-3. Add an HTTPS reverse proxy (Nginx/Caddy) on the server.
-4. Restrict Bitcoin RPC access to localhost/VPN/firewalled management IPs.
-5. Move frontend to same domain when ready (or keep on Pages while API points to server).
-
-## Info needed from you for next phase
-
-To connect this UI to a real pool backend, I need:
-
-- Preferred pool stack (e.g., NOMP-derived, ckpool, custom Node.js/Go/Rust)
-- Target payout method (PPS, FPPS, PPLNS)
-- User auth requirements (email/password, wallet-only, OAuth)
-- Whether solo mode should be separate port/endpoint or account-level toggle
-- TLS domain(s) you plan to use
+- This stack is a practical production baseline, but you should still perform full security review, payment dry-runs, and testnet soak tests before large hashrate.
+- Start with small hashrate for validation, verify payouts, then scale.

@@ -2,6 +2,8 @@ const modeButtons = document.querySelectorAll('.mode-btn');
 const modeStat = document.getElementById('modeStat');
 const yieldStat = document.getElementById('yieldStat');
 const nodeStat = document.getElementById('nodeStat');
+const poolHashrateStat = document.getElementById('poolHashrateStat');
+const apiStatus = document.getElementById('apiStatus');
 const formMessage = document.getElementById('formMessage');
 const form = document.getElementById('miningForm');
 
@@ -20,6 +22,13 @@ function syncModeUI() {
   });
 
   modeStat.textContent = selectedMode === 'solo' ? 'Solo Mining' : 'Pool Mining';
+  const defaultPort = selectedMode === 'solo' ? '3334' : '3333';
+  const stratumInput = document.getElementById('stratumUrl');
+  const current = stratumInput.value.trim();
+
+  if (current.includes(':3333') || current.includes(':3334')) {
+    stratumInput.value = current.replace(/:(3333|3334)$/, `:${defaultPort}`);
+  }
 }
 
 modeButtons.forEach((btn) => {
@@ -58,7 +67,7 @@ form.addEventListener('submit', (event) => {
   };
 
   localStorage.setItem('sam256MiningPreview', JSON.stringify(settings));
-  formMessage.textContent = 'Configuration saved in browser storage (prototype mode).';
+  formMessage.textContent = 'Configuration saved. Use this with your ASIC profile settings.';
 });
 
 function bootstrapFromStorage() {
@@ -88,5 +97,50 @@ function bootstrapFromStorage() {
   }
 }
 
+function formatHashrate(value) {
+  if (!value || Number.isNaN(Number(value))) {
+    return '0 H/s';
+  }
+
+  const units = ['H/s', 'KH/s', 'MH/s', 'GH/s', 'TH/s', 'PH/s', 'EH/s'];
+  let hash = Number(value);
+  let idx = 0;
+
+  while (hash >= 1000 && idx < units.length - 1) {
+    hash /= 1000;
+    idx += 1;
+  }
+
+  return `${hash.toFixed(2)} ${units[idx]}`;
+}
+
+async function refreshPoolStats() {
+  try {
+    const response = await fetch('/api/pools');
+    if (!response.ok) {
+      throw new Error('Pool API unavailable');
+    }
+
+    const payload = await response.json();
+    const pools = payload?.pools ?? [];
+    const poolId = selectedMode === 'solo' ? 'btc-solo' : 'btc-pool';
+    const activePool = pools.find((pool) => pool.id === poolId) ?? pools[0];
+
+    if (!activePool) {
+      poolHashrateStat.textContent = 'No pool stats yet';
+      apiStatus.textContent = 'API connected, waiting for first shares';
+      return;
+    }
+
+    poolHashrateStat.textContent = formatHashrate(activePool.poolStats?.poolHashrate ?? 0);
+    apiStatus.textContent = 'API connected';
+  } catch {
+    poolHashrateStat.textContent = 'API offline';
+    apiStatus.textContent = 'API not reachable yet';
+  }
+}
+
 syncModeUI();
 bootstrapFromStorage();
+refreshPoolStats();
+setInterval(refreshPoolStats, 30000);
