@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /src
-RUN git clone --depth 1 --branch ${MININGCORE_REF} ${MININGCORE_REPO} miningcore
+RUN git clone --branch ${MININGCORE_REF} ${MININGCORE_REPO} miningcore
 WORKDIR /src/miningcore
 RUN dotnet publish -c Release -o /app/out src/Miningcore/Miningcore.csproj
 

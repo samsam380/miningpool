@@ -52,6 +52,22 @@ chmod +x scripts/setup-production.sh
 ./scripts/setup-production.sh
 ```
 
+
+## Fix for GitVersion "unshallow clone" build error
+
+If build fails with `GitVersionException ... Please ensure that the repository is an unshallow clone`,
+it means Miningcore was cloned with insufficient history.
+This repo now performs a full clone in `miningcore/Dockerfile`, which resolves that error.
+
+After pulling latest changes, rebuild without cache once:
+
+```bash
+cd /opt/miningpool
+git pull origin main
+docker compose build --no-cache miningcore
+./scripts/setup-production.sh
+```
+
 ## Required edits before real mining
 
 1. `miningcore/config.json`
