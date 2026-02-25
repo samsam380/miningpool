@@ -8,7 +8,9 @@ fi
 
 mkdir -p miningcore/logs
 
+echo "Using MININGCORE_IMAGE=${MININGCORE_IMAGE:-coinfoundry/miningcore:latest}"
 echo "Starting pool stack..."
+docker compose pull
 docker compose up -d
 
 echo "Pool stack started."

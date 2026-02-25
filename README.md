@@ -27,6 +27,18 @@ cp .env.example .env
 ./scripts/setup-production.sh
 ```
 
+## Registry denied fix (your current error)
+
+If you get `error from registry: denied` while pulling Miningcore, set a public image in `.env`:
+
+```bash
+echo 'MININGCORE_IMAGE=coinfoundry/miningcore:latest' >> .env
+docker compose pull
+docker compose up -d
+```
+
+This repo now defaults to `coinfoundry/miningcore:latest` in `docker-compose.yml`, and you can override it anytime with `MININGCORE_IMAGE` in `.env`.
+
 Then point rented hashpower to:
 
 - Pool mode: `stratum+tcp://<server-ip>:3333`
