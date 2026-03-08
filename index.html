@@ -27,9 +27,6 @@
 
         <nav class="header-actions">
           <a class="btn btn-outline" href="#setup">Configure Miner</a>
-          <a class="btn" href="http://161.97.137.172:8080/" target="_blank" rel="noopener">
-            Open Web UI
-          </a>
         </nav>
       </div>
     </header>
@@ -52,18 +49,20 @@
           <ul class="hero-bullets">
             <li><strong>Payout:</strong> Your BTC address (username)</li>
             <li><strong>Workers:</strong> address.workerName</li>
-            <li><strong>Difficulty:</strong> VarDiff (auto)</li>
+            <li><strong>Difficulty:</strong> VarDiff (auto) or fixed-diff ports</li>
           </ul>
         </div>
 
         <div class="hero-card">
           <h3>Stratum Endpoints</h3>
 
-          <p><strong>Pool:</strong> <code>stratum+tcp://161.97.137.172:3333</code></p>
-          <p><strong>Solo:</strong> <code>stratum+tcp://161.97.137.172:3334</code></p>
+          <p><strong>Pool (VarDiff):</strong> <code>stratum+tcp://161.97.137.172:3333</code></p>
+          <p><strong>Solo (VarDiff):</strong> <code>stratum+tcp://161.97.137.172:3334</code></p>
+          <p><strong>High Fixed Diff (1.7M):</strong> <code>stratum+tcp://161.97.137.172:3347</code></p>
 
           <p class="muted">
-            Web UI: <a href="http://161.97.137.172:8080/" target="_blank" rel="noopener">http://161.97.137.172:8080/</a>
+            Use port <code>3347</code> for very high hashrate miners (Ph/s class). Standard miners can use
+            the default VarDiff ports above.
           </p>
 
           <div class="status-row">
@@ -136,7 +135,7 @@
 
     <footer class="site-footer">
       <div class="container">
-        <p>Sam256 Mining Pool · Pool (3333) · Solo (3334) · Web UI (8080)</p>
+        <p>Sam256 Mining Pool · Pool (3333) · Solo (3334) · High Diff (3347)</p>
       </div>
     </footer>
 
