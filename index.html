@@ -12,6 +12,66 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
+
+    <style>
+      .endpoint-list {
+        display: grid;
+        gap: 0;
+        margin-top: 1rem;
+      }
+
+      .endpoint-item {
+        padding: 0.85rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .endpoint-item:first-child {
+        padding-top: 0.25rem;
+      }
+
+      .endpoint-item:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+
+      .endpoint-top {
+        margin-bottom: 0.25rem;
+      }
+
+      .endpoint-item code {
+        display: inline-block;
+        margin-bottom: 0.3rem;
+        word-break: break-all;
+      }
+
+      .endpoint-note {
+        margin: 0;
+        font-size: 0.9rem;
+        line-height: 1.35;
+        opacity: 0.8;
+      }
+
+      .quick-start {
+        margin: 1rem 0 0.5rem 1.25rem;
+        padding: 0;
+      }
+
+      .quick-start li {
+        margin-bottom: 0.45rem;
+      }
+
+      .chart-card {
+        min-height: 260px;
+      }
+
+      .chart-header {
+        margin-bottom: 0.75rem;
+      }
+
+      .chart-header .muted {
+        margin-top: 0.25rem;
+      }
+    </style>
   </head>
 
   <body>
@@ -60,28 +120,25 @@
             <div class="endpoint-item">
               <div class="endpoint-top">
                 <strong>Pool (VarDiff)</strong>
-                <button class="copy-btn" type="button" data-copy-target="poolEndpoint">Copy</button>
               </div>
               <code id="poolEndpoint">stratum+tcp://161.97.137.172:3333</code>
-              <p class="muted">General miners and standard pooled mining</p>
+              <p class="endpoint-note">General miners and standard pooled mining</p>
             </div>
 
             <div class="endpoint-item">
               <div class="endpoint-top">
                 <strong>Solo (VarDiff)</strong>
-                <button class="copy-btn" type="button" data-copy-target="soloEndpoint">Copy</button>
               </div>
               <code id="soloEndpoint">stratum+tcp://161.97.137.172:3334</code>
-              <p class="muted">Solo block hunting using your own hashrate</p>
+              <p class="endpoint-note">Solo block hunting using your own hashrate</p>
             </div>
 
             <div class="endpoint-item">
               <div class="endpoint-top">
                 <strong>High Fixed Diff (1.7M)</strong>
-                <button class="copy-btn" type="button" data-copy-target="highDiffEndpoint">Copy</button>
               </div>
               <code id="highDiffEndpoint">stratum+tcp://161.97.137.172:3347</code>
-              <p class="muted">Recommended for very high hashrate miners (Ph/s class)</p>
+              <p class="endpoint-note">Recommended for very high hashrate miners (Ph/s class)</p>
             </div>
           </div>
 
@@ -114,15 +171,6 @@
         </div>
 
         <form id="miningForm" class="setup-grid">
-          <label>
-            Connection Preset
-            <select id="connectionPreset">
-              <option value="stratum+tcp://161.97.137.172:3333">Pool (VarDiff) — 3333</option>
-              <option value="stratum+tcp://161.97.137.172:3334">Solo (VarDiff) — 3334</option>
-              <option value="stratum+tcp://161.97.137.172:3347">High Fixed Diff (1.7M) — 3347</option>
-            </select>
-          </label>
-
           <label>
             Stratum URL
             <input id="stratumUrl" type="text" value="stratum+tcp://161.97.137.172:3333" required />
@@ -184,10 +232,6 @@
           </div>
 
           <canvas id="hashrateChart" height="120"></canvas>
-
-          <div class="chart-footer">
-            <p class="muted">Last updated: <span id="lastUpdated">--</span></p>
-          </div>
         </article>
       </section>
     </main>
