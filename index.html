@@ -56,14 +56,34 @@
         <div class="hero-card">
           <h3>Stratum Endpoints</h3>
 
-          <p><strong>Pool (VarDiff):</strong> <code>stratum+tcp://161.97.137.172:3333</code></p>
-          <p><strong>Solo (VarDiff):</strong> <code>stratum+tcp://161.97.137.172:3334</code></p>
-          <p><strong>High Fixed Diff (1.7M):</strong> <code>stratum+tcp://161.97.137.172:3347</code></p>
+          <div class="endpoint-list">
+            <div class="endpoint-item">
+              <div class="endpoint-top">
+                <strong>Pool (VarDiff)</strong>
+                <button class="copy-btn" type="button" data-copy-target="poolEndpoint">Copy</button>
+              </div>
+              <code id="poolEndpoint">stratum+tcp://161.97.137.172:3333</code>
+              <p class="muted">General miners and standard pooled mining</p>
+            </div>
 
-          <p class="muted">
-            Use port <code>3347</code> for very high hashrate miners (Ph/s class). Standard miners can use
-            the default VarDiff ports above.
-          </p>
+            <div class="endpoint-item">
+              <div class="endpoint-top">
+                <strong>Solo (VarDiff)</strong>
+                <button class="copy-btn" type="button" data-copy-target="soloEndpoint">Copy</button>
+              </div>
+              <code id="soloEndpoint">stratum+tcp://161.97.137.172:3334</code>
+              <p class="muted">Solo block hunting using your own hashrate</p>
+            </div>
+
+            <div class="endpoint-item">
+              <div class="endpoint-top">
+                <strong>High Fixed Diff (1.7M)</strong>
+                <button class="copy-btn" type="button" data-copy-target="highDiffEndpoint">Copy</button>
+              </div>
+              <code id="highDiffEndpoint">stratum+tcp://161.97.137.172:3347</code>
+              <p class="muted">Recommended for very high hashrate miners (Ph/s class)</p>
+            </div>
+          </div>
 
           <div class="status-row">
             <span class="status-dot"></span>
@@ -72,16 +92,37 @@
         </div>
       </section>
 
+      <section class="container card form-card">
+        <h3>Quick Start</h3>
+        <ol class="quick-start">
+          <li>Choose Pool, Solo, or Fixed Diff port</li>
+          <li>Use your BTC address as username</li>
+          <li>Set worker as <code>address.workerName</code> and password to <code>x</code></li>
+        </ol>
+        <p class="muted">
+          Solo mode pays only if your miner finds a valid block. Pool mode shares rewards across participants.
+        </p>
+      </section>
+
       <section id="setup" class="container card form-card">
         <h3>Miner Setup</h3>
         <p>Use one profile for shared payouts or solo block hunt.</p>
 
         <div class="mode-toggle" role="tablist" aria-label="Mining mode">
-          <button id="poolModeBtn" class="mode-btn active" data-mode="pool">Pool Mining</button>
-          <button id="soloModeBtn" class="mode-btn" data-mode="solo">Solo Mining</button>
+          <button id="poolModeBtn" class="mode-btn active" data-mode="pool" type="button">Pool Mining</button>
+          <button id="soloModeBtn" class="mode-btn" data-mode="solo" type="button">Solo Mining</button>
         </div>
 
         <form id="miningForm" class="setup-grid">
+          <label>
+            Connection Preset
+            <select id="connectionPreset">
+              <option value="stratum+tcp://161.97.137.172:3333">Pool (VarDiff) — 3333</option>
+              <option value="stratum+tcp://161.97.137.172:3334">Solo (VarDiff) — 3334</option>
+              <option value="stratum+tcp://161.97.137.172:3347">High Fixed Diff (1.7M) — 3347</option>
+            </select>
+          </label>
+
           <label>
             Stratum URL
             <input id="stratumUrl" type="text" value="stratum+tcp://161.97.137.172:3333" required />
@@ -118,17 +159,35 @@
           <h4>Selected Mode</h4>
           <p id="modeStat" class="stat">Pool Mining</p>
         </article>
-        <article class="card stat-card">
-          <h4>Estimated Daily Yield</h4>
-          <p id="yieldStat" class="stat">0.00000000 BTC</p>
-        </article>
-        <article class="card stat-card">
-          <h4>Stratum Endpoint</h4>
-          <p id="nodeStat" class="stat">161.97.137.172</p>
-        </article>
+
         <article class="card stat-card">
           <h4>Live Pool Hashrate</h4>
           <p id="poolHashrateStat" class="stat">Waiting for API</p>
+        </article>
+
+        <article class="card stat-card">
+          <h4>Connected Workers</h4>
+          <p id="workerCountStat" class="stat">Waiting for API</p>
+        </article>
+
+        <article class="card stat-card">
+          <h4>Network Height</h4>
+          <p id="networkHeightStat" class="stat">Waiting for API</p>
+        </article>
+      </section>
+
+      <section class="container">
+        <article class="card chart-card">
+          <div class="chart-header">
+            <h4>Pool Hashrate Trend</h4>
+            <p class="muted">Recent live samples</p>
+          </div>
+
+          <canvas id="hashrateChart" height="120"></canvas>
+
+          <div class="chart-footer">
+            <p class="muted">Last updated: <span id="lastUpdated">--</span></p>
+          </div>
         </article>
       </section>
     </main>
