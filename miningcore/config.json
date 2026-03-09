@@ -89,7 +89,12 @@
       "enabled": true,
       "coin": "bitcoin",
       "address": "bc1replacewithrealpayoutaddress",
-      "rewardRecipients": [],
+      "rewardRecipients": [
+        {
+          "address": "YOUR_REAL_BTC_FEE_ADDRESS",
+          "percentage": 1.0
+        }
+      ],
       "jobRebroadcastTimeout": 10,
       "blockRefreshInterval": 1000,
       "clientConnectionTimeout": 600,
