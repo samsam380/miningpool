@@ -61,20 +61,112 @@
       }
 
       .chart-card {
-        min-height: 260px;
+        min-height: 360px;
       }
 
       .chart-header {
-        margin-bottom: 0.75rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
       }
 
       .chart-header .muted {
         margin-top: 0.25rem;
       }
 
-      /* Keep the gap between stat cards and chart card visually consistent */
+      .chart-meta {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(120px, 1fr));
+        gap: 0.85rem;
+        margin-bottom: 1rem;
+      }
+
+      .chart-meta-item {
+        padding: 0.85rem 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .chart-meta-label {
+        font-size: 0.82rem;
+        opacity: 0.72;
+        margin-bottom: 0.35rem;
+      }
+
+      .chart-meta-value {
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1.2;
+      }
+
+      .chart-wrap {
+        position: relative;
+        width: 100%;
+        min-height: 220px;
+      }
+
+      .chart-legend-note {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+        font-size: 0.92rem;
+      }
+
+      .chart-legend-note span {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        opacity: 0.88;
+      }
+
+      .chart-legend-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        display: inline-block;
+      }
+
+      .dot-current {
+        background: #f2a65a;
+      }
+
+      .dot-5m {
+        background: #7cc4ff;
+      }
+
+      .dot-30m {
+        background: #c7d2da;
+      }
+
+      .dot-60m {
+        background: #8fe388;
+      }
+
+      /* Reverted to the roomier spacing before the footer line */
+      .dashboard-grid {
+        margin-bottom: 2rem;
+      }
+
       .chart-section {
-        margin-top: 1.5rem;
+        margin-top: 0;
+        margin-bottom: 2rem;
+      }
+
+      @media (max-width: 900px) {
+        .chart-meta {
+          grid-template-columns: repeat(2, minmax(120px, 1fr));
+        }
+      }
+
+      @media (max-width: 560px) {
+        .chart-meta {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
@@ -229,11 +321,44 @@
       <section class="container chart-section">
         <article class="card chart-card">
           <div class="chart-header">
-            <h4>Pool Hashrate Trend</h4>
-            <p class="muted">Recent live samples</p>
+            <div>
+              <h4>Pool Hashrate Trend</h4>
+              <p class="muted">Live hashrate, rolling averages, and hover details</p>
+            </div>
           </div>
 
-          <canvas id="hashrateChart" height="120"></canvas>
+          <div class="chart-meta">
+            <div class="chart-meta-item">
+              <div class="chart-meta-label">Current</div>
+              <div id="chartCurrentHashrate" class="chart-meta-value">Waiting for API</div>
+            </div>
+
+            <div class="chart-meta-item">
+              <div class="chart-meta-label">5 Min Average</div>
+              <div id="chartAvg5m" class="chart-meta-value">Waiting for API</div>
+            </div>
+
+            <div class="chart-meta-item">
+              <div class="chart-meta-label">30 Min Average</div>
+              <div id="chartAvg30m" class="chart-meta-value">Waiting for API</div>
+            </div>
+
+            <div class="chart-meta-item">
+              <div class="chart-meta-label">60 Min Average</div>
+              <div id="chartAvg60m" class="chart-meta-value">Waiting for API</div>
+            </div>
+          </div>
+
+          <div class="chart-wrap">
+            <canvas id="hashrateChart"></canvas>
+          </div>
+
+          <div class="chart-legend-note" aria-hidden="true">
+            <span><i class="chart-legend-dot dot-current"></i>Current Hashrate</span>
+            <span><i class="chart-legend-dot dot-5m"></i>5 Min Average</span>
+            <span><i class="chart-legend-dot dot-30m"></i>30 Min Average</span>
+            <span><i class="chart-legend-dot dot-60m"></i>60 Min Average</span>
+          </div>
         </article>
       </section>
     </main>
@@ -244,6 +369,7 @@
       </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
