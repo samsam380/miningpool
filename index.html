@@ -71,6 +71,16 @@
       .chart-header .muted {
         margin-top: 0.25rem;
       }
+
+      /* Added spacing so the chart card has equal visual breathing room */
+      .dashboard-grid {
+        margin-bottom: 2rem;
+      }
+
+      .chart-section {
+        margin-top: 0;
+        margin-bottom: 2rem;
+      }
     </style>
   </head>
 
@@ -84,10 +94,6 @@
             <p>Pool + Solo · Stratum endpoints · Live stats</p>
           </div>
         </div>
-
-        <nav class="header-actions">
-          <a class="btn btn-outline" href="#setup">Configure Miner</a>
-        </nav>
       </div>
     </header>
 
@@ -225,7 +231,7 @@
         </article>
       </section>
 
-      <section class="container">
+      <section class="container chart-section">
         <article class="card chart-card">
           <div class="chart-header">
             <h4>Pool Hashrate Trend</h4>
