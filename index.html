@@ -61,7 +61,7 @@
       }
 
       .chart-card {
-        min-height: 360px;
+        min-height: 420px;
       }
 
       .chart-header {
@@ -81,7 +81,7 @@
         display: grid;
         grid-template-columns: repeat(4, minmax(120px, 1fr));
         gap: 0.85rem;
-        margin-bottom: 1rem;
+        margin-bottom: 1.25rem;
       }
 
       .chart-meta-item {
@@ -106,7 +106,15 @@
       .chart-wrap {
         position: relative;
         width: 100%;
-        min-height: 220px;
+        min-height: 280px;
+        height: 280px;
+        padding: 0.25rem 0 0;
+      }
+
+      .chart-wrap canvas {
+        display: block;
+        width: 100% !important;
+        height: 100% !important;
       }
 
       .chart-legend-note {
@@ -147,7 +155,6 @@
         background: #8fe388;
       }
 
-      /* Reverted to the roomier spacing before the footer line */
       .dashboard-grid {
         margin-bottom: 2rem;
       }
@@ -161,11 +168,21 @@
         .chart-meta {
           grid-template-columns: repeat(2, minmax(120px, 1fr));
         }
+
+        .chart-wrap {
+          min-height: 260px;
+          height: 260px;
+        }
       }
 
       @media (max-width: 560px) {
         .chart-meta {
           grid-template-columns: 1fr;
+        }
+
+        .chart-wrap {
+          min-height: 240px;
+          height: 240px;
         }
       }
     </style>
